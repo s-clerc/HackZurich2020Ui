@@ -7,13 +7,15 @@
   
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item v-on:click="state = 'about-view'">About</b-nav-item>
-          <b-nav-item v-on:click="state = 'main-view'">Tool</b-nav-item>
+          <b-nav-item v-on:click="$store.commit('changeTab', 'about-view')">About</b-nav-item>
+          <b-nav-item v-on:click="$store.commit('changeTab', 'main-view')">Tool</b-nav-item>
+          <b-nav-item v-on:click="$store.commit('changeTab', 'history-view')">Previous Queries</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <MainView v-if="state=='main-view'"></MainView>
-    <div v-if="state=='about-view'">
+    <MainView v-if="$store.state.currentTab=='main-view'"></MainView>
+    <HistoryView v-if="$store.state.currentTab=='history-view'"></HistoryView>
+    <div v-if="$store.state.currentTab=='about-view'">
       Hello, we are people
     </div>
   </div>
@@ -22,10 +24,14 @@
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
 import MainView from "./components/MainView.vue"
+import HistoryView from "./components/HistoryView.vue"
+
+
 export default {
   name: 'App',
   components: {
-    MainView
+    MainView,
+    HistoryView
   },
   data: () => {
     return {

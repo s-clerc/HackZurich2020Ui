@@ -1,7 +1,7 @@
 <template>
   <div class="data-view">
     <b-container>
-      Test
+      Test {{ uploadId }}
       <b-row>
         <div id="preview">
           <h4> Preview </h4>
@@ -28,18 +28,36 @@
 
 <script type="application/javascript">
 import CodeView from "./CodeView.vue"
+import axios from 'axios'
+import Vue from 'vue'
+
 export default {
   name: 'DataView',
   data: () => {
     return {
-      isImageLoading: true
+      isImageLoading: true,
+      code: [null, null]
     }
   },
   components: {
     CodeView
   },
-  props: ["uploadId", "code", "urlBase"],
+  props: ["uploadId", "urlBase"],
   methods: {
+  },
+  watch: {
+    uploadId: {
+      immediate: true,
+      handler (id) {
+        // Slightly complicated, but we're doing it this way so that 
+        // we present the data as soon as it is loaded.
+        for (let [index, type] of ["json", "graph"].entries()) {
+          axios
+            .get(`${this.urlBase}/data/${id}.${type}`)
+            .then((response) => Vue.set(this.data, index, response))
+        }
+      }
+    }
   }
 }
 </script>
