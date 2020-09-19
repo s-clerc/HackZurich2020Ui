@@ -47,8 +47,10 @@ export default {
       ).then((response) => {
         console.log('SUCCESS!!')
         console.log(response)
-        this.$store.state.commit("newId", response.id)
-        localStorage.history = JSON.stringify(JSON.parse(localStorage.history).append(response.id))
+        this.$store.commit("newId", response.data)
+        const history = JSON.parse(localStorage.history || "[]")
+        history.push({id: response.data, name: this.file.name})
+        localStorage.history = JSON.stringify(history)
       }).catch((response) => {
         console.log('FAILURE!!')
         console.log(response)

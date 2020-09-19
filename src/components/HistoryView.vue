@@ -17,7 +17,7 @@ export default {
   components: {
   },
   mounted () {
-    this.history = JSON.parse(localStorage.history)
+    this.history = JSON.parse(localStorage.history || "[]")
   },
   watch: {
     history (newValue) {
