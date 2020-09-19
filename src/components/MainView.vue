@@ -8,20 +8,15 @@
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here...">
         </b-form-file>
-        <button v-on:click="submitFile()" class="mt-3" :disabled="file == null" >Upload {{ file ? file.name : '' }}</button>
+        <button v-on:click="submitFile()" class="mt-3" :disabled="file == null" >Upload {{ file ? file.name : '' }}
+        </button>
       </b-row>
-      <b-row>
-        <div id="preview">
-          <b-img v-if="uploadId && fileUploaded" :src="`${urlBase}/preview/${uploadId}.png`"></b-img>
-          <b-skeleton-img class="skeleton-img" v-else-if="fileUploaded"></b-skeleton-img>
-        </div>
-      </b-row>
-      <b-row>
-          <b-tabs content-class="mt-3">
-            <b-tab title="JSON" active><DataView id="json-data-view" :data="data[0]"></DataView></b-tab>
-            <b-tab title="GraphViz"><DataView id="graph-viz-data-view" :data="data[1]"></DataView></b-tab>
-          </b-tabs>
-      </b-row>
+      <DataView v-if="fileUploaded" 
+                :upload-id="uploadId"
+                :code="data"
+                :url-base="urlBase">
+              
+      </DataView>
     </b-container>
   </div>
 </template>
@@ -50,7 +45,7 @@ export default {
     submitFile: function () {
       let formData = new FormData()
       formData.append('file', this.file)
-      axios.post( `${this.urlBase}/upload`,
+      axios.post(`${this.urlBase}/upload`,
         formData,
         {
           headers: {
@@ -82,5 +77,9 @@ export default {
 #preview {
   width:  80%;
   height: 20%;
+}
+
+h4 {
+  text-align: left;
 }
 </style>

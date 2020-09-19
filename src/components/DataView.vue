@@ -1,35 +1,56 @@
 <template>
   <div class="data-view">
-    <div v-if="isLoading">
-      <b-skeleton animation="wave" width="85%"></b-skeleton>
-      <b-skeleton animation="wave" width="55%"></b-skeleton>
-      <b-skeleton animation="wave" width="70%"></b-skeleton>
-    </div>
-    <div v-else-if="data">
-      <pre>
-        {{data}}
-      </pre>
-    </div>
-    <div v-else>
-      Please upload a file to see the data
-    </div>
+    <b-container>
+      Test
+      <b-row>
+        <div id="preview">
+          <h4> Preview </h4>
+          <b-img :hidden="isImageLoading" :src="`${urlBase}/preview/${uploadId}.png`" @load="isImageLoading=false"></b-img>
+          <b-skeleton-img class="skeleton-img" v-if="isImageLoading"></b-skeleton-img>
+        </div>
+      </b-row>
+      <b-row>
+          <div id="code-views" content-class="mt-3">
+            <h4> Computed Data </h4>
+            <b-tabs >
+              <b-tab title="JSON" active>
+                <CodeView id="json-code-view" :data="code[0]"></CodeView>
+              </b-tab>
+              <b-tab title="GraphViz">
+                <CodeView id="graph-viz-code-view" :data="code[1]"></CodeView>
+              </b-tab>
+            </b-tabs>
+          </div>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
 <script type="application/javascript">
+import CodeView from "./CodeView.vue"
 export default {
   name: 'DataView',
-  props: {
-    isLoading: () => false,
-    data: null
+  data: () => {
+    return {
+      isImageLoading: true
+    }
   },
+  components: {
+    CodeView
+  },
+  props: ["uploadId", "code", "urlBase"],
   methods: {
   }
 }
 </script>
 
 <style scoped>
-  pre {
-    text-align: left;
-  }
+#preview {
+  width:  80%;
+  height: 20%;
+}
+
+h4 {
+  text-align: left;
+}
 </style>
