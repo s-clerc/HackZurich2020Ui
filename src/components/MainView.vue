@@ -3,8 +3,8 @@
     <b-container>
       <b-row>
         <b-form-file
-          v-model="file1"
-          :state="Boolean(file1)"
+          v-model="file"
+          :state="Boolean(file)"
           placeholder="Choose a file or drop it here..."
           drop-placeholder="Drop file here...">
         </b-form-file>
@@ -17,8 +17,8 @@
       </b-row>
       <b-row>
           <b-tabs content-class="mt-3">
-            <b-tab title="JSON" active><p>I'm the first tab</p></b-tab>
-            <b-tab title="GraphViz"><p>I'm the second tab</p></b-tab>
+            <b-tab title="JSON" active><DataView id="json-data-view"></DataView></b-tab>
+            <b-tab title="GraphViz"><DataView id="graph-viz-data-view"></DataView></b-tab>
           </b-tabs>
       </b-row>
     </b-container>
@@ -27,13 +27,18 @@
 
 <script type="application/javascript">
 import axios from 'axios'
+import DataView from "./DataView.vue"
 export default {
   name: 'MainView',
+  components: {
+    DataView
+  },
   props: {
   },
   data: () => {
     return {
-      file: null
+      file: null,
+      fileUploaded: false
     }
   },
   methods: {
@@ -50,6 +55,7 @@ export default {
       ).then(function(response){
         console.log('SUCCESS!!')
         console.log(response)
+        this.fileUploaded = true
       })
       .catch(function(response){
         console.log('FAILURE!!')
