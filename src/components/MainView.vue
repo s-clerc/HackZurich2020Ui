@@ -12,8 +12,7 @@
         </button>
       </b-row>
       <DataView v-if="$store.state.uploadId" 
-                :upload-id="$store.state.uploadId"
-                :url-base="urlBase">
+                :upload-id="$store.state.uploadId">
       </DataView>
     </b-container>
   </div>
@@ -31,15 +30,14 @@ export default {
   data: () => {
     return {
       file: null,
-      data: [null, null],
-      urlBase: ""
+      data: [null, null]
     }
   },
   methods: {
     submitFile: function () {
       let formData = new FormData()
-      formData.append('file', this.file)
-      axios.post(`${this.urlBase}/upload`,
+      formData.append('image', this.file)
+      axios.post(`${this.$store.state.urlBase}/upload`,
         formData,
         {
           headers: {

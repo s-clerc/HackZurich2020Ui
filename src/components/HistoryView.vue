@@ -2,7 +2,7 @@
   <div class="history-view">
     <b-card v-for="query in history" 
             :key="query"
-            :img-src="`${urlBase}/preview/${query}.png`" 
+            :img-src="`${$store.state.urlBase}/preview/${query}.png`" 
             :img-alt="`Schematic ID ${query}`" 
             img-left 
             class="mb-3"

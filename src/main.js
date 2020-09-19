@@ -11,7 +11,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     uploadId: null,
-    currentTab: "main-view"
+    currentTab: "main-view",
+    urlBase: "http://127.0.0.1:5000"
   },
   mutations: {
     newId (state, newId) {

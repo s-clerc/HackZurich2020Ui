@@ -5,7 +5,7 @@
       <b-row>
         <div id="preview">
           <h4> Preview </h4>
-          <b-img :hidden="isImageLoading" :src="`${urlBase}/preview/${uploadId}.png`" @load="isImageLoading=false"></b-img>
+          <b-img :hidden="isImageLoading" fluid :src="`${$store.state.urlBase}/preview/${uploadId}.png`" @load="isImageLoading=false"></b-img>
           <b-skeleton-img class="skeleton-img" v-if="isImageLoading"></b-skeleton-img>
         </div>
       </b-row>
@@ -42,7 +42,7 @@ export default {
   components: {
     CodeView
   },
-  props: ["uploadId", "urlBase"],
+  props: ["uploadId"],
   methods: {
   },
   watch: {
@@ -53,7 +53,7 @@ export default {
         // we present the data as soon as it is loaded.
         for (let [index, type] of ["json", "graph"].entries()) {
           axios
-            .get(`${this.urlBase}/data/${id}.${type}`)
+            .get(`${this.$store.state.urlBase}/data/${id}.${type}`)
             .then((response) => Vue.set(this.data, index, response))
         }
       }
