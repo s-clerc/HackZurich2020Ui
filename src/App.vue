@@ -6,9 +6,16 @@
       <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
   
       <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav>
+          <b-nav-item v-on:click="state = 'about-view'">About</b-nav-item>
+          <b-nav-item v-on:click="state = 'main-view'">Tool</b-nav-item>
+        </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <MainView></MainView>
+    <MainView v-if="state=='main-view'"></MainView>
+    <div v-if="state=='about-view'">
+      Hello, we are people
+    </div>
   </div>
 </template>
 
@@ -19,6 +26,11 @@ export default {
   name: 'App',
   components: {
     MainView
+  },
+  data: () => {
+    return {
+      state: "main-view"
+    }
   }
 }
 </script>
