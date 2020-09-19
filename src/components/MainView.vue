@@ -12,7 +12,7 @@
       </b-row>
       <b-row>
         <div id="preview">
-          <b-img v-if="uploadId && fileUploaded" :src="uploadId"></b-img>
+          <b-img v-if="uploadId && fileUploaded" :src="`${urlBase}/preview/${uploadId}.png`"></b-img>
           <b-skeleton-img class="skeleton-img" v-else-if="fileUploaded"></b-skeleton-img>
         </div>
       </b-row>
@@ -42,14 +42,15 @@ export default {
       file: null,
       fileUploaded: false,
       uploadId: undefined,
-      data: [null, null]
+      data: [null, null],
+      urlBase: ""
     }
   },
   methods: {
-    submitFile: () => {
+    submitFile: function () {
       let formData = new FormData()
       formData.append('file', this.file)
-      axios.post( '/upload',
+      axios.post( `${this.urlBase}/upload`,
         formData,
         {
           headers: {
@@ -65,7 +66,7 @@ export default {
         // we present the data as soon as it is loaded.
         for (let [index, type] of ["json", "graph"].entries()) {
           axios
-            .get(`/data/${this.uploadId}.${type}`)
+            .get(`${this.urlBase}/data/${this.uploadId}.${type}`)
             .then((response) => Vue.set(this.data, index, response))
         }
       }).catch((response) => {
