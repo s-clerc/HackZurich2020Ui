@@ -1,17 +1,24 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <b-navbar toggleable="lg" type="dark" variant="info" fixed="top">
+      <b-navbar-brand href="#">DigitMatic</b-navbar-brand>
+  
+      <!-- <b-navbar-toggle target="nav-collapse"></b-navbar-toggle> -->
+  
+      <b-collapse id="nav-collapse" is-nav>
+      </b-collapse>
+    </b-navbar>
+    <MainView></MainView>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+//import HelloWorld from './components/HelloWorld.vue'
+import MainView from "./components/MainView.vue"
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    MainView
   }
 }
 </script>
