@@ -12,13 +12,14 @@
       </b-row>
       <b-row>
         <div id="preview">
-          <b-img></b-img>
+          <b-img v-if="uploadId && fileUploaded" :src="uploadId"></b-img>
+          <b-skeleton-img class="skeleton-img" v-else-if="fileUploaded"></b-skeleton-img>
         </div>
       </b-row>
       <b-row>
           <b-tabs content-class="mt-3">
-            <b-tab title="JSON" active><DataView id="json-data-view"></DataView></b-tab>
-            <b-tab title="GraphViz"><DataView id="graph-viz-data-view"></DataView></b-tab>
+            <b-tab title="JSON" active><DataView id="json-data-view" :data="data[0]"></DataView></b-tab>
+            <b-tab title="GraphViz"><DataView id="graph-viz-data-view" :data="data[1]"></DataView></b-tab>
           </b-tabs>
       </b-row>
     </b-container>
@@ -28,6 +29,7 @@
 <script type="application/javascript">
 import axios from 'axios'
 import DataView from "./DataView.vue"
+import Vue from 'vue';
 export default {
   name: 'MainView',
   components: {
@@ -38,7 +40,9 @@ export default {
   data: () => {
     return {
       file: null,
-      fileUploaded: false
+      fileUploaded: false,
+      uploadId: undefined,
+      data: [null, null]
     }
   },
   methods: {
@@ -52,15 +56,22 @@ export default {
               'Content-Type': 'multipart/form-data'
           }
         }
-      ).then(function(response){
+      ).then((response) => {
         console.log('SUCCESS!!')
         console.log(response)
         this.fileUploaded = true
-      })
-      .catch(function(response){
+        this.uploadId = response.id
+        // Slightly complicated, but we're doing it this way so that 
+        // we present the data as soon as it is loaded.
+        for (let [index, type] of ["json", "graph"].entries()) {
+          axios
+            .get(`/data/${this.uploadId}.${type}`)
+            .then((response) => Vue.set(this.data, index, response))
+        }
+      }).catch((response) => {
         console.log('FAILURE!!')
         console.log(response)
-      });
+      })
     }
   }
 }
@@ -68,7 +79,7 @@ export default {
 
 <style scoped>
 #preview {
-  width:  80 %;
-  height: 20 %;
+  width:  80%;
+  height: 20%;
 }
 </style>
