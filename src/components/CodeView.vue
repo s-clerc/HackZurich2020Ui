@@ -11,7 +11,7 @@
       </pre>
     </div>
     <div v-else>
-      Please upload a file to see the code
+      Error loading computed data
     </div>
   </div>
 </template>

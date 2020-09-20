@@ -4,9 +4,12 @@ import Vue from 'vue'
 import './plugins/bootstrap-vue'
 import App from './App.vue'
 import Vuex from 'vuex'
+import VueCytoscape from 'vue-cytoscape'
 
 Vue.config.productionTip = false
 Vue.use(Vuex)
+Vue.use(VueCytoscape)
+
 
 const store = new Vuex.Store({
   state: {
@@ -23,7 +26,6 @@ const store = new Vuex.Store({
     }
   }
 })
-
 
 new Vue({
   render: h => h(App),
