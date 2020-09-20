@@ -50,50 +50,57 @@ import Vue from 'vue'
 
 export default {
   name: 'DataView',
-  updated () {
+  updated: async function () {
     let cyto = document.getElementById("cy")
     for (let canvas of cyto.getElementsByTagName("canvas")) {
       canvas.style.left = "0"
     }
+    console.log("hey")
+    const cy = await this.$refs.cy.cy
+      this.$nextTick(() => {
+        cy.layout({name: "grid"}).run();
+        cy.fit(null, 200);
+        console.log("OK")
+      });
   },
   data: () => {
     return {
       isImageLoading: true,
       code: [null, null],
       config: {
-  style: [
-    {
-      selector: 'node',
-      style: {
-        'background-color': '#666',
-        'label': 'data(id)'
-      }
-    }, {
-      selector: 'edge',
-      style: {
-        'width': 3,
-        'line-color': '#ccc',
-        'target-arrow-color': '#ccc',
-        'target-arrow-shape': 'triangle'
-      }
-    }
-  ],
-  layout: {
-    name: 'grid',
-    rows: 1
-  }
-},
+        style: [
+          {
+            selector: 'node',
+            style: {
+              'background-color': '#666',
+              'label': 'data(id)'
+            }
+          }, {
+            selector: 'edge',
+            style: {
+              'width': 3,
+              'line-color': '#ccc',
+              'target-arrow-color': '#ccc',
+              'target-arrow-shape': 'triangle'
+            }
+          }
+        ],
+        layout: {
+          name: 'grid',
+          rows: 2
+        }
+      },
       elements: [
- { // node a
-      data: { id: 'a' }
-    },
-    { // node b
-      data: { id: 'b' }
-    },
-    { // edge ab
-      data: { id: 'ab', source: 'a', target: 'b' }
-    }
-]
+        { // node a
+          data: { id: 'a' }
+        },
+        { // node b
+          data: { id: 'b' }
+        },
+        { // edge ab
+          data: { id: 'ab', source: 'a', target: 'b' }
+        }
+      ]
     }
   },
   components: {
@@ -111,7 +118,10 @@ export default {
         for (let [index, type] of ["json", "graph"].entries()) {
           axios
             .get(`${this.$store.state.urlBase}/data/${id}.${type}`)
-            .then((response) => Vue.set(this.data, index, response))
+            .then((response) => {
+              console.log(`GET ${type} ${response}`)
+              Vue.set(this.code, index, response)
+            })
         }
       }
     }
